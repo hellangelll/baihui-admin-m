@@ -1,0 +1,49 @@
+{
+  "user": {
+    "id": 1,
+    "userName": "aaa",
+    "userPwd": "aaa",
+    "nickName": "雨过天晴",
+    "mobile": "18317014097",
+    "avatar":"http://p3.wmpic.me/article/2014/11/17/1416205187_htOWwvoH.jpg"
+  },
+  "list":[
+    {
+      "bookId": 1,
+      "coverImg": "static/images/book_01.png",
+      "title": "陈二狗的妖孽人生1",
+      "article": "王茂",
+      "price": "28.00",
+      "views": 788,
+      "date":"2012/05/06"
+    },
+    {
+      "bookId": 2,
+      "coverImg": "/static/images/book_01.png",
+      "title": "岁月静好",
+      "article": "陈静楚",
+      "price": "38.00",
+      "views": 33,
+      "date":"2017/08/22"
+    },
+    {
+      "bookId": 3,
+      "coverImg": "static/images/book_01.png",
+      "title": "陈二狗的妖孽人生",
+      "article": "王茂",
+      "price": "28.00",
+      "views": 267,
+      "date":"2014/10/14"
+    },
+    {
+      "bookId": 4,
+      "coverImg": "static/images/book_01.png",
+      "title": "岁月静好",
+      "article": "陈静楚",
+      "price": "38.00",
+      "views": 68,
+      "date":"2016/02/08"
+    }
+  ]
+
+}
