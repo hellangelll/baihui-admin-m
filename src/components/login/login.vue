@@ -1,7 +1,7 @@
 <template>
   <div class="loginWrap">
     <div class="login">
-      <h2>登 录</h2>
+      <h2>百惠商户通管理后台</h2>
       <div class="row">
         <label class="fa fa-user"></label>
         <input type="text" name="userName" placeholder="请输入用户名" v-model="userName"/>
@@ -11,10 +11,10 @@
         <input type="password" name="userPwd" placeholder="请输入密码" v-model="userPwd" @keyup.enter="login($event)">
       </div>
       <div class="submit" @click="login">登 录</div>
-      <div class="bottom">
+      <!-- <div class="bottom">
         <router-link to="register">我要注册</router-link>|
         <router-link to="forget">忘记密码</router-link>
-      </div>
+      </div> -->
     </div>
     <!--<vue-modal></vue-modal>-->
   </div>

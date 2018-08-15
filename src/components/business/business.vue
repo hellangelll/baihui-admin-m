@@ -16,9 +16,9 @@
           </div>
           <ul>
             <span v-if="noData">没有数据</span>
-            <li v-for="item in list" :key="item">
-              <mt-cell :title="item.businessName" :label="item.businessMemo" is-link @click="goDetail(item)">
-                <mt-button type="primary" size="small">查看详情</mt-button>
+            <li v-for="item in list">
+              <mt-cell :title="item.id+':'+item.businessName" :label="item.businessMemo" is-link>
+                <mt-button  @click="showBusinessDetail(item)" type="primary" size="small">查看详情</mt-button>
               </mt-cell>
             </li>
           </ul>
@@ -107,15 +107,11 @@ export default {
     handleTopChange(status){
       this.topStatus = status;
     },
-    goDetail(item){
-      //console.log(item)
-      let bookId = item.bookId;
-      let bookName = item.title;
-      console.log(bookId, bookName);
-
+    showBusinessDetail(item){
+      // console.log(item)
       this.$router.push({
-        name:'Detail',
-        params:{id:bookId, name: bookName}
+        name:'ShowBusinessDetail',
+        params:item
       })
     }
   }

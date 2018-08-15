@@ -14,6 +14,10 @@ export default {
   getBusinessList:function(params, callBack){
     let url = baseUrl + '/trade/business/list';
     return apiAxiosFun(url,'get', params, callBack)
+  },
+  saveBusinessInfo:function(params, callBack){
+    let url = baseUrl + '/trade/business/list';
+    return apiAxiosFun(url,'get', params, callBack)
   }
 }
 

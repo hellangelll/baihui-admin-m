@@ -4,12 +4,14 @@ import Router from 'vue-router'
 import Login from '@/components/login/login'
 import Register from '@/components/register/register'
 import Forget from '@/components/forget/forget'
-import Index from '@/components/index/index'
+// import Index from '@/components/index/index'
 import My from '@/components/my/my'
 import Essays from '@/components/essays/essays'
 import Drabs from '@/components/drabs/drabs'
 import Detail from '@/components/detail/detail'
 import Business from '@/components/business/business'
+import ShowBusinessDetail from '@/components/business/showBusinessDetail'
+import ModifyBusinessDetail from '@/components/business/modifyBusinessDetail'
 
 Vue.use(Router)
 
@@ -17,18 +19,31 @@ Vue.use(Router)
 const myRouter = new Router({
   //mode:'history',
   routes: [
-    {
-      path: '/index',
-      name: 'Index',
-      alias: '/',
-      meta:{requiredAuth:true},
-      component: Index
-    },
+    // {
+    //   path: '/index',
+    //   name: 'Index',
+    //   alias: '/',
+    //   meta:{requiredAuth:true},
+    //   component: Index
+    // },
     {
       path: '/business',
       name: 'Business',
+      alias: '/',
       meta:{requiredAuth:true},
       component: Business
+    },
+    {
+      path: '/showBusinessDetail',
+      name: 'ShowBusinessDetail',
+      meta:{requiredAuth:true},
+      component: ShowBusinessDetail
+    },
+    {
+      path: '/modifyBusinessDetail',
+      name: 'ModifyBusinessDetail',
+      meta:{requiredAuth:true},
+      component: ModifyBusinessDetail
     },
     {
       path: '/my',

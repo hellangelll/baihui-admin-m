@@ -4,7 +4,7 @@
     <div class="page-title">
       <slot name="header">no header</slot>
     </div>
-    <div class="right"><i class="fa fa-cog"></i></div>
+    <div class="right"> </div>
     {{message}}
   </div>
 </template>
