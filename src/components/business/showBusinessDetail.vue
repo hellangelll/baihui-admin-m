@@ -2,15 +2,15 @@
   <div class="detail">
     <app-header><p slot="header">商家信息详情</p></app-header>
     <div class="main">
-        <mt-cell title="ID" :label="item.businessMemo">{{item.id | defultValue}}</mt-cell>
-        <mt-cell title="商家名称" :label="item.businessMemo">{{item.businessName | defultValue}}</mt-cell>
-        <mt-cell title="商家电话" :label="item.businessMemo">{{item.businessPhone | defultValue}}</mt-cell>
-        <mt-cell title="联系人姓名" :label="item.businessMemo">{{item.contactPeopleName | defultValue}}</mt-cell>
-        <mt-cell title="联系人电话" :label="item.businessMemo">{{item.contactPeoplePhone | defultValue}}</mt-cell>
-        <mt-cell title="商家地址" :label="item.businessMemo">{{item.businessAddress | defultValue}}</mt-cell>
-        <mt-cell title="备注" :label="item.businessMemo">{{item.businessMemo | defultValue}}</mt-cell>
-        <mt-cell title="创建时间" :label="item.businessMemo">{{item.createTime | defultValue}}</mt-cell>
-        <mt-cell title="更新时间" :label="item.businessMemo">{{item.updateTime | defultValue}}</mt-cell>        
+        <mt-cell title="ID">{{item.id | defultValue}}</mt-cell>
+        <mt-cell title="商家名称">{{item.businessName | defultValue}}</mt-cell>
+        <mt-cell title="商家电话">{{item.businessPhone | defultValue}}</mt-cell>
+        <mt-cell title="联系人姓名">{{item.contactPeopleName | defultValue}}</mt-cell>
+        <mt-cell title="联系人电话">{{item.contactPeoplePhone | defultValue}}</mt-cell>
+        <mt-cell title="商家地址">{{item.businessAddress | defultValue}}</mt-cell>
+        <mt-cell title="备注">{{item.businessMemo | defultValue}}</mt-cell>
+        <mt-cell title="创建时间">{{item.createTime | defultValue}}</mt-cell>
+        <mt-cell title="更新时间">{{item.updateTime | defultValue}}</mt-cell>        
     </div>
     <mt-button type="primary" @click="modifyBusinessDetail(item)">修改商家信息</mt-button>
   </div>
@@ -30,7 +30,7 @@
     },
     filters:{
       defultValue:function (par){
-        console.log(par)
+        // console.log(par)
         return par || '暂无数据'
       }
     },

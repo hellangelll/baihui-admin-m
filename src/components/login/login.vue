@@ -42,7 +42,7 @@
 
         let name = this.userName;
         let pwd = this.userPwd;
-        let redirect = this.$route.query.redirect || '/index';
+        let redirect = this.$route.query.redirect || '/business';
         //book/1220562
         //var vm = this;
         this.$apis.login({"username":name,"password":pwd}, res => {

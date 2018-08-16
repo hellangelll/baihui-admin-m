@@ -12,6 +12,8 @@ import Detail from '@/components/detail/detail'
 import Business from '@/components/business/business'
 import ShowBusinessDetail from '@/components/business/showBusinessDetail'
 import ModifyBusinessDetail from '@/components/business/modifyBusinessDetail'
+import Order from '@/components/order/order'
+import ShowOrderDetail from '@/components/order/showOrderDetail'
 
 Vue.use(Router)
 
@@ -44,6 +46,18 @@ const myRouter = new Router({
       name: 'ModifyBusinessDetail',
       meta:{requiredAuth:true},
       component: ModifyBusinessDetail
+    },
+    {
+      path: '/order',
+      name: 'Order',
+      meta:{requiredAuth:true},
+      component: Order
+    },
+    {
+      path: '/showOrderDetail',
+      name: 'ShowOrderDetail',
+      meta:{requiredAuth:true},
+      component: ShowOrderDetail
     },
     {
       path: '/my',

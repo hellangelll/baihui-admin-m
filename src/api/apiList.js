@@ -16,9 +16,17 @@ export default {
     return apiAxiosFun(url,'get', params, callBack)
   },
   saveBusinessInfo:function(params, callBack){
-    let url = baseUrl + '/trade/business/list';
+    let url = baseUrl + '/trade/business/update';
+    return apiAxiosFun(url,'post', params, callBack)
+  },
+  getOrderList:function(params, callBack){
+    let url = baseUrl + '/trade/order/list';
     return apiAxiosFun(url,'get', params, callBack)
-  }
+  },
+  modifyOrderStatus:function(params, callBack){
+    let url = baseUrl + '/trade/order/update';
+    return apiAxiosFun(url,'post', params, callBack)
+  },
 }
 
 

@@ -64,9 +64,10 @@
       saveBusinessDetail(){
         let redirect = this.$route.query.redirect || '/business';
         // console.log(this.form)
-        this.$apis.saveBusinessInfo({"limit":10,"offset":0},res=>{
+        this.$apis.saveBusinessInfo(this.form,res=>{
           let data = res.data;
-          if(data.total >0){
+          // console.log(data)
+          if(data.code == 0){
             swal({
               title:'修改成功!',
               type:'success',
