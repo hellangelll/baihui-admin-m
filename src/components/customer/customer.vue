@@ -1,7 +1,7 @@
 <template>
   <div class="index">
     <app-header>
-      <span slot="header">订单信息管理</span>
+      <span slot="header">用户信息管理</span>
     </app-header>
     <div class="main">
       <div class="list-wrapper">
@@ -16,9 +16,10 @@
           </div>
           <ul>
             <span v-if="noData">没有数据</span>
-            <li v-for="item in list">
-              <mt-cell :title="'订单金额:'+item.totalmoney/100" :label="'订单号:'+item.id" is-link>
-                <mt-button  @click="showOrderDetail(item)" type="primary" size="small">{{item.status | orderStateName}}</mt-button>
+            <li v-for="item in list" :key='item'>
+              <mt-cell :title="'姓名:'+item.realName" :label="item | customerStateName" is-link>
+                 <!-- <span style="" @click="showCustomerDetail(item)">{{item.phone}}</span> -->
+                 <mt-button  @click="showCustomerDetail(item)" type="" size="small">{{item.phone}}</mt-button>
               </mt-cell>
             </li>
           </ul>
@@ -45,10 +46,12 @@ export default {
     }
   },
   filters:{
-    orderStateName:function (par){
-    // console.log(par)
-    let listName = ["下单未支付","等待派送","派送中","已收货"]
-    return listName[par]
+    customerStateName:function (par){
+      let listName = ["待审核","正常","停用"]
+      return '状态:'+listName[par.status]+' 等级:'+par.leave
+    },
+    customerTypeName:function (par){
+      
     }
 },
   components:{
@@ -56,17 +59,17 @@ export default {
       'appMenu': appMenu
   },
   mounted(){
-      this.getOrderData();
+      this.getCustomerData()
   },
   watch:{ //复用组件时，想对路由参数的变化作出响应的话，你可以简单地 watch（监测变化） $route 对象
     $route:function(to, from){
       this.list = []
-      this.getOrderData();
+      this.getCustomerData();
     }
   },
   methods: {
-    getOrderData(){
-      this.$apis.getOrderList({"limit":10,"offset":0},res=>{
+    getCustomerData(){
+      this.$apis.getCustomerList({"limit":100,"offset":0},res=>{
         let data = res.data;
         // this.bissnessList.append(data);
         if(data.total >0){
@@ -87,7 +90,7 @@ export default {
       // 加载更多数据
       var _this = this;
       setTimeout(function () {
-        _this.getOrderData();
+        _this.getCustomerData();
         _this.$refs.loadmore.onTopLoaded();
       }, 1000);
     },
@@ -97,7 +100,7 @@ export default {
       if(this.count <=5){
         let _this = this;
         setTimeout(function(){
-          _this.getOrderData();
+          _this.getCustomerData();
           _this.$refs.loadmore.onBottomLoaded();
         },1000)
       }else{
@@ -111,10 +114,9 @@ export default {
     handleTopChange(status){
       this.topStatus = status;
     },
-    showOrderDetail(item){
-      // console.log(item)
+    showCustomerDetail(item){
       this.$router.push({
-        name:'ShowOrderDetail',
+        name:'ModifyCustomerDetail',
         params:item
       })
     }

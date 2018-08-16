@@ -1,15 +1,15 @@
 <template>
   <div class="detail">
-    <app-header><p slot="header">订单信息详情</p></app-header>
+    <app-header><p slot="header">用户信息详情11</p></app-header>
     <div class="main">
-        <mt-cell title="订单编号">{{item.id}}</mt-cell>
-        <mt-cell title="订货总金额(元)">{{item.totalmoney/100}}</mt-cell>
-        <mt-cell title="支付状态">{{item.isPaid | payStateName}}</mt-cell>
-        <mt-cell title="订单状态">{{item.status | orderStateName}}</mt-cell>
-        <mt-cell title="下单时间">{{item.createTime}}</mt-cell>
-        <mt-cell title="收货人信息">{{customerAddressDO.linkMan+' '+customerAddressDO.linkPhone}}</mt-cell>
-        <mt-cell title="订货单详情" v-for="its in orderDetailResults" :key="its.name">{{its.name+"X"+its.num}}</mt-cell>
-        <mt-cell title="客户留言">{{item.remark||'暂无'}}</mt-cell>
+        <mt-cell title="编号">{{item.id}}</mt-cell>
+        <mt-cell title="真实姓名">{{item.realName}}</mt-cell>
+        <mt-cell title="昵称">{{item.nickName}}</mt-cell>
+        <mt-cell title="用户等级">{{item.leave}}</mt-cell>
+        <mt-cell title="用户状态">{{item.status}}</mt-cell>
+        <mt-cell title="创建时间">{{item.createTime}}</mt-cell>
+        <mt-cell title="更新时间">{{item.updateTime}}</mt-cell>
+        <mt-cell title="微信openid">{{item.openId}}</mt-cell>
     </div>
     <mt-button v-if="item.status==1||item.status==2" type="primary" @click="modifyOrderStatus(item)">修改订单状态为-{{item.status+1|orderStateName}}</mt-button>
   </div>

@@ -4,8 +4,8 @@
       <!-- <router-link to="/index" tag="li"><span><i class="fa fa-home fa-fw"></i>home</span></router-link> -->
       <router-link to="/business" tag="li"><span><i class="fa fa-users fa-fw"></i>商家</span></router-link>
       <router-link to="/order" tag="li"><span><i class="fa fa-clone fa-fw"></i>订单</span></router-link>
-      <router-link to="/drabs" tag="li"><span><i class="fa fa-address-book-o fa-fw"></i>用户</span></router-link>
-      <router-link to="/my" tag="li"><span><i class="fa fa-cart-plus fa-fw"></i>商品</span></router-link>
+      <router-link to="/goods" tag="li"><span><i class="fa fa-cart-plus fa-fw"></i>商品</span></router-link>
+      <router-link to="/customer" tag="li"><span><i class="fa fa-address-book-o fa-fw"></i>用户</span></router-link>
     </ul>
   </div>
 </template>

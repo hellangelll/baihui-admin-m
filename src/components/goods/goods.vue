@@ -1,7 +1,7 @@
 <template>
   <div class="index">
     <app-header>
-      <span slot="header">订单信息管理</span>
+      <span slot="header">商品信息管理</span>
     </app-header>
     <div class="main">
       <div class="list-wrapper">
@@ -18,7 +18,7 @@
             <span v-if="noData">没有数据</span>
             <li v-for="item in list">
               <mt-cell :title="'订单金额:'+item.totalmoney/100" :label="'订单号:'+item.id" is-link>
-                <mt-button  @click="showOrderDetail(item)" type="primary" size="small">{{item.status | orderStateName}}</mt-button>
+                <mt-button  @click="showGoodsDetail(item)" type="primary" size="small">{{item.status | orderStateName}}</mt-button>
               </mt-cell>
             </li>
           </ul>
@@ -56,17 +56,17 @@ export default {
       'appMenu': appMenu
   },
   mounted(){
-      this.getOrderData();
+      this.getGoodsData();
   },
   watch:{ //复用组件时，想对路由参数的变化作出响应的话，你可以简单地 watch（监测变化） $route 对象
     $route:function(to, from){
       this.list = []
-      this.getOrderData();
+      this.getGoodsData();
     }
   },
   methods: {
-    getOrderData(){
-      this.$apis.getOrderList({"limit":10,"offset":0},res=>{
+    getGoodsData(){
+      this.$apis.getGoodsList({"limit":10,"offset":0},res=>{
         let data = res.data;
         // this.bissnessList.append(data);
         if(data.total >0){
@@ -87,7 +87,7 @@ export default {
       // 加载更多数据
       var _this = this;
       setTimeout(function () {
-        _this.getOrderData();
+        _this.getGoodsData();
         _this.$refs.loadmore.onTopLoaded();
       }, 1000);
     },
@@ -97,7 +97,7 @@ export default {
       if(this.count <=5){
         let _this = this;
         setTimeout(function(){
-          _this.getOrderData();
+          _this.getGoodsData();
           _this.$refs.loadmore.onBottomLoaded();
         },1000)
       }else{
@@ -111,10 +111,9 @@ export default {
     handleTopChange(status){
       this.topStatus = status;
     },
-    showOrderDetail(item){
-      // console.log(item)
+    showGoodsDetail(item){
       this.$router.push({
-        name:'ShowOrderDetail',
+        name:'ShowGoodsDetail',
         params:item
       })
     }

@@ -14,6 +14,11 @@ import ShowBusinessDetail from '@/components/business/showBusinessDetail'
 import ModifyBusinessDetail from '@/components/business/modifyBusinessDetail'
 import Order from '@/components/order/order'
 import ShowOrderDetail from '@/components/order/showOrderDetail'
+import Goods from '@/components/goods/goods'
+import ShowgoodsDetail from '@/components/goods/showGoodsDetail'
+import Customer from '@/components/customer/customer'
+import ShowCustomerDetail from '@/components/customer/showCustomerDetail'
+import ModifyCustomerDetail from '@/components/customer/modifyCustomerDetail'
 
 Vue.use(Router)
 
@@ -58,6 +63,36 @@ const myRouter = new Router({
       name: 'ShowOrderDetail',
       meta:{requiredAuth:true},
       component: ShowOrderDetail
+    },
+    {
+      path: '/goods',
+      name: 'Goods',
+      meta:{requiredAuth:true},
+      component: Goods
+    },
+    {
+      path: '/showgoodsDetail',
+      name: 'ShowgoodsDetail',
+      meta:{requiredAuth:true},
+      component: ShowgoodsDetail
+    },
+    {
+      path: '/customer',
+      name: 'Customer',
+      meta:{requiredAuth:true},
+      component: Customer
+    },
+    {
+      path: '/showCustomerDetail',
+      name: 'ShowCustomerDetail',
+      meta:{requiredAuth:true},
+      component: ShowCustomerDetail
+    },
+    {
+      path: '/modifyCustomerDetail',
+      name: 'ModifyCustomerDetail',
+      meta:{requiredAuth:true},
+      component: ModifyCustomerDetail
     },
     {
       path: '/my',

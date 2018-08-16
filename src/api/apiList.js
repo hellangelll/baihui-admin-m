@@ -24,7 +24,19 @@ export default {
     return apiAxiosFun(url,'get', params, callBack)
   },
   modifyOrderStatus:function(params, callBack){
-    let url = baseUrl + '/trade/order/update';
+    let url = baseUrl + '/trade/order/send';
+    return apiAxiosFun(url,'post', params, callBack)
+  },
+  getGoodsList:function(params, callBack){
+    let url = baseUrl + '/trade/goods/list';
+    return apiAxiosFun(url,'get', params, callBack)
+  },
+  getCustomerList:function(params, callBack){
+    let url = baseUrl + '/trade/customer/list';
+    return apiAxiosFun(url,'get', params, callBack)
+  },
+  saveCustomerInfo:function(params, callBack){
+    let url = baseUrl + '/trade/customer/update';
     return apiAxiosFun(url,'post', params, callBack)
   },
 }
