@@ -5,7 +5,7 @@
     </app-header>
     <div class="main">
       <div class="list-wrapper">
-        <mt-loadmore :top-method="loadTop" :bottom-method="loadBottom" :bottom-all-loaded="allLoaded" @bottom-status-change="handleBottomChange" @top-status-change="handleTopChange" ref="loadmore" :autoFill="false">
+        <mt-loadmore :bottom-method="loadBottom" :bottom-all-loaded="allLoaded" @bottom-status-change="handleBottomChange" ref="loadmore" :autoFill="false">
           <div slot="top" class="mint-loadmore-top">
             <span v-show="topStatus !== 'loading'" :class="{ 'rotate': topStatus === 'drop' }">↓</span>
             <span v-show="topStatus === 'loading'"><i class="fa fa-spinner fa-spin"></i> 加载中...</span>
@@ -16,10 +16,10 @@
           </div>
           <ul>
             <span v-if="noData">没有数据</span>
-            <li v-for="item in list" :key='item'>
+            <li v-for="item in list" :key='item.id'>
               <mt-cell :title="'姓名:'+item.realName" :label="item | customerStateName" is-link>
                  <!-- <span style="" @click="showCustomerDetail(item)">{{item.phone}}</span> -->
-                 <mt-button  @click="showCustomerDetail(item)" type="" size="small">{{item.phone}}</mt-button>
+                 <mt-button  @click="showCustomerDetail(item)" type="primary" size="small">{{item.phone}}</mt-button>
               </mt-cell>
             </li>
           </ul>
@@ -42,7 +42,9 @@ export default {
       noData: true,
       bottomStatus: '',
       scrollMode:"auto", //移动端弹性滚动效果，touch为弹性滚动，auto是非弹性滚动
-      count: 0
+      pageSize:10,
+      pageTotal:1,
+      currentPageNum:0
     }
   },
   filters:{
@@ -62,27 +64,30 @@ export default {
       this.getCustomerData()
   },
   watch:{ //复用组件时，想对路由参数的变化作出响应的话，你可以简单地 watch（监测变化） $route 对象
-    $route:function(to, from){
-      this.list = []
-      this.getCustomerData();
-    }
+    // $route:function(to, from){
+    //   this.list = []
+    //   this.getCustomerData();
+    // }
   },
   methods: {
     getCustomerData(){
-      this.$apis.getCustomerList({"limit":100,"offset":0},res=>{
+      let that = this
+      this.$apis.getCustomerList({"limit":this.pageSize,"offset":this.pageSize*this.currentPageNum},res=>{
         let data = res.data;
-        // this.bissnessList.append(data);
-        if(data.total >0){
-          this.noData = false;
-          this.list = this.list.concat(data.rows);
-          this.$nextTick(function () {
-          // 愿意是DOM更新循环结束时调用延迟回调函数，大意就是DOM元素在因为某些原因要进行修改就在这里写，要在修改某些数据后才能写，
-          // 这里之所以加是因为有个坑，iphone在使用-webkit-overflow-scrolling属性，就是移动端弹性滚动效果时会屏蔽loadmore的上拉加载效果，
-          // 花了好久才解决这个问题，就是用这个函数，意思就是先设置属性为auto，正常滑动，加载完数据后改成弹性滑动，安卓没有这个问题，移动端弹性滑动体验会更好
-          this.scrollMode = "touch";
+        if(data.rows.length >0){
+          that.noData = false;
+          that.list = that.list.concat(data.rows);
+          that.$nextTick(function () {
+            that.scrollMode = "touch";
           });
         }else{
-          this.noData = true;
+          that.noData = true;
+        }
+        that.pageTotal = Math.ceil(data.total/that.pageSize);
+        if(that.pageTotal-1<=that.currentPageNum){
+          that.allLoaded = true;
+        }else{
+          that.allLoaded = false; // 若数据已全部获取完毕
         }
       })
     },
@@ -96,15 +101,13 @@ export default {
     },
     loadBottom() {
       // 加载更多数据
-      this.count ++;
-      if(this.count <=5){
+      if(!this.allLoaded){
+        this.currentPageNum ++;
         let _this = this;
         setTimeout(function(){
           _this.getCustomerData();
           _this.$refs.loadmore.onBottomLoaded();
         },1000)
-      }else{
-        this.allLoaded = true;// 若数据已全部获取完毕
       }
     },
     handleBottomChange(status){

@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <keep-alive>
-      <router-view/>
+      <router-view :key="key"/>
     </keep-alive>
 
   </div>
@@ -28,7 +28,12 @@
         let clientW = docEl.clientWidth;
         docEl.style.fontSize = clientW/750*100 + 'px';
       }
+    },
+    computed: {
+    key() {
+        return this.$route.name !== undefined? this.$route.name +new Date(): this.$route +new Date()
     }
+ }
 
   }
 </script>

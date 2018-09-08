@@ -7,7 +7,8 @@ import { Indicator, Toast} from 'mint-ui'
 
 
 
-const baseUrl = 'https://test.bhsht.com'
+// const baseUrl = 'http://test.bhsht.com'
+const baseUrl = '/apis'
 const doubanUrl = 'https://api.douban.com/v2'
 
 

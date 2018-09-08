@@ -5,9 +5,11 @@
       <router-link to="/business" tag="li"><span><i class="fa fa-users fa-fw"></i>商家</span></router-link>
       <router-link to="/order" tag="li"><span><i class="fa fa-clone fa-fw"></i>订单</span></router-link>
       <router-link to="/goods" tag="li"><span><i class="fa fa-cart-plus fa-fw"></i>商品</span></router-link>
-      <router-link to="/customer" tag="li"><span><i class="fa fa-address-book-o fa-fw"></i>用户</span></router-link>
+      <router-link to="/goodsType" tag="li"><span><i class="fa fa-cart-plus fa-fw"></i>商品-类目</span></router-link>
+      <router-link to="/customer" tag="li"><span><i class="fa fa-user-md fa-fw"></i>用户管理</span></router-link>
+      <router-link to="/my" tag="li"><span><i class="fa fa-user fa-fw"></i>我的</span></router-link>
     </ul>
-  </div>
+  </div>  
 </template>
 
 <script type="text/ecmascript-6">
@@ -15,14 +17,13 @@
     name:'myMenu',
     data:function(){
       return {
-
       }
     },
     created:function(){
 
     },
     methods:{
-
+      
     }
   }
 </script>

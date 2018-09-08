@@ -31,6 +31,14 @@ export default {
     let url = baseUrl + '/trade/goods/list';
     return apiAxiosFun(url,'get', params, callBack)
   },
+  saveGoodsInfo:function(params, callBack){
+    let url = baseUrl + '/trade/goods/update';
+    return apiAxiosFun(url,'post', params, callBack)
+  },
+  addGoodsInfo:function(params, callBack){
+    let url = baseUrl + '/trade/goods/save';
+    return apiAxiosFun(url,'post', params, callBack)
+  },
   getCustomerList:function(params, callBack){
     let url = baseUrl + '/trade/customer/list';
     return apiAxiosFun(url,'get', params, callBack)
@@ -38,6 +46,18 @@ export default {
   saveCustomerInfo:function(params, callBack){
     let url = baseUrl + '/trade/customer/update';
     return apiAxiosFun(url,'post', params, callBack)
+  },
+  sysFileUpload:function(params, callBack){
+    let url = baseUrl + '/common/sysFile/upload';
+    return apiAxiosFun(url,'post', params, callBack)
+  },
+  getFilePathDomain:function(callBack){
+    let url = baseUrl + '/host';
+    return apiAxiosFun(url,'get', {}, callBack)
+  },
+  getGoodsTypeList:function(params, callBack){
+    let url = baseUrl + '/trade/goodsCategory/list';
+    return apiAxiosFun(url,'get', params, callBack)
   },
 }
 

@@ -28,8 +28,8 @@
     data(){
       return {
         userData: {},
-        userName:'admin',
-        userPwd:'111111'
+        userName:'',
+        userPwd:''
       }
     },
     mounted(){
@@ -43,14 +43,13 @@
         let name = this.userName;
         let pwd = this.userPwd;
         let redirect = this.$route.query.redirect || '/business';
-        //book/1220562
-        //var vm = this;
+
         this.$apis.login({"username":name,"password":pwd}, res => {
           let data = res.data;
           this.userData = data;
           if(res.status == 200){
             if( this.userData.code == 0){;
-              localStorage.setItem('userInfo', JSON.stringify(this.userData));
+              localStorage.setItem('userInfo', JSON.stringify({"username":name}));
               this.$store.commit('updateLoginStatus', true); //更新登录状态为true
               this.$store.commit('updateUserInfo', this.userData);
 
@@ -60,24 +59,6 @@
             }
           }
         })
-
-
-        /*this.Axios.get('/api/mockData/login.php').then(res=>{
-          let data = res.data;
-          this.userData = data;
-          if(res.status == 200){
-            if( name == this.userData.userName && pwd == this.userData.userPwd){;
-              localStorage.setItem('userInfo', JSON.stringify(this.userData));
-              this.$store.commit('updateLoginStatus', true); //更新登录状态为true
-              this.$store.commit('updateUserInfo', this.userData);
-
-              this.$router.push({path:redirect});
-            }else{
-              this.loginErr();
-            }
-          }
-        }).catch(error=>console.log(error));*/
-
       },
       loginErr(data){
         //this.$indicator.close();
@@ -86,12 +67,8 @@
           type:'error',
           confirmButtonText:'确定'
         });
-
       }
-
     }
-
-
   }
 </script>
 

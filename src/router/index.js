@@ -15,7 +15,9 @@ import ModifyBusinessDetail from '@/components/business/modifyBusinessDetail'
 import Order from '@/components/order/order'
 import ShowOrderDetail from '@/components/order/showOrderDetail'
 import Goods from '@/components/goods/goods'
-import ShowgoodsDetail from '@/components/goods/showGoodsDetail'
+import GoodsType from '@/components/goodsType/goodsType'
+import ModifyGoodsDetail from '@/components/goods/modifyGoodsDetail'
+import AddGoodsDetail from '@/components/goods/addGoodsDetail'
 import Customer from '@/components/customer/customer'
 import ShowCustomerDetail from '@/components/customer/showCustomerDetail'
 import ModifyCustomerDetail from '@/components/customer/modifyCustomerDetail'
@@ -71,10 +73,22 @@ const myRouter = new Router({
       component: Goods
     },
     {
-      path: '/showgoodsDetail',
-      name: 'ShowgoodsDetail',
+      path: '/goodsType',
+      name: 'GoodsType',
       meta:{requiredAuth:true},
-      component: ShowgoodsDetail
+      component: GoodsType
+    },
+    {
+      path: '/modifyGoodsDetail',
+      name: 'ModifyGoodsDetail',
+      meta:{requiredAuth:true},
+      component: ModifyGoodsDetail
+    },
+    {
+      path: '/addGoodsDetail',
+      name: 'AddGoodsDetail',
+      meta:{requiredAuth:true},
+      component: AddGoodsDetail
     },
     {
       path: '/customer',
@@ -136,23 +150,23 @@ const myRouter = new Router({
 });
 
 //全局守卫钩子
-myRouter.beforeEach( function(to, from, next){
-  let loginStatus = localStorage.getItem("userInfo") ? true : false;
-  //array.some(function(param){ return param>10})
-  //record,可以随意取名，代表数组中的每个元素
-  if(to.matched.some(record => record.meta.requiredAuth)){
-    if(!loginStatus){
-      next({
-        path:'/login',
-        query: { redirect: to.fullPath }
-      })
-    }else{
-      next();
-    }
-  }else{
-    next();
-  }
+// myRouter.beforeEach( function(to, from, next){
+//   let loginStatus = localStorage.getItem("userInfo") ? true : false;
+//   //array.some(function(param){ return param>10})
+//   //record,可以随意取名，代表数组中的每个元素
+//   if(to.matched.some(record => record.meta.requiredAuth)){
+//     if(!loginStatus){
+//       next({
+//         path:'/login',
+//         query: { redirect: to.fullPath }
+//       })
+//     }else{
+//       next();
+//     }
+//   }else{
+//     next();
+//   }
 
-})
+// })
 
 export default myRouter;

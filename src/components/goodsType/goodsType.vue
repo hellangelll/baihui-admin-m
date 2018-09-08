@@ -1,11 +1,11 @@
 <template>
   <div class="index">
     <app-header>
-      <span slot="header">商品信息管理</span>
+      <span slot="header">商品类别管理</span>
     </app-header>
     <div class="main">
       <div class="list-wrapper">
-        <mt-loadmore :bottom-method="loadBottom" :bottom-all-loaded="allLoaded" @bottom-status-change="handleBottomChange" ref="loadmore" :autoFill="false">  
+        <mt-loadmore :bottom-method="loadBottom" :bottom-all-loaded="allLoaded" @bottom-status-change="handleBottomChange" ref="loadmore" :autoFill="false">
           <div slot="top" class="mint-loadmore-top">
             <span v-show="topStatus !== 'loading'" :class="{ 'rotate': topStatus === 'drop' }">↓</span>
             <span v-show="topStatus === 'loading'"><i class="fa fa-spinner fa-spin"></i> 加载中...</span>
@@ -17,10 +17,8 @@
           <ul>
             <span v-if="noData">没有数据</span>
             <li v-for="item in list" :key="item.id">
-              <mt-cell :title="item.name+' 售价:'+item.containerPrice/100+'元'" :label="'商品ID:'+item.id+' 规格:'+item.specifications">
-                <img slot="icon" :src="filePathDomain+item.goodsImg" width="24" height="24">
-                <mt-button  @click="addGoodsDetail(item)" type="primary" size="small">添加</mt-button>
-                <mt-button  @click="modifyGoodsDetail(item)" type="primary" size="small">编辑</mt-button>
+              <mt-cell :title="item.id+'. '+item.name" :label="'创建:'+substrTime(item.createTimne)+' 修改:'+substrTime(item.updateTime)" :value="'父节点ID:'+item.pid">
+                <!-- <mt-button  @click="modifyGoodsDetail(item)" type="primary" size="small">详情</mt-button> -->
               </mt-cell>
             </li>
           </ul>
@@ -45,35 +43,29 @@ export default {
       scrollMode:"auto", //移动端弹性滚动效果，touch为弹性滚动，auto是非弹性滚动
       pageSize:10,
       pageTotal:1,
-      currentPageNum:0,
-      filePathDomain:''
+      currentPageNum:0
     }
   },
   filters:{
-    goodsStateName:function (par){
-    // console.log(par)
-    let listName = ["下单未支付","启用"]
-    return '状态: '+listName[par]
-    }
-},
+    
+  },
   components:{
       'appHeader': appHeader,
       'appMenu': appMenu
   },
   mounted(){
-    this.getFilePathDomain()
-    this.getGoodsData()
+    this.getGoodsTypeData()
   },
   watch:{ //复用组件时，想对路由参数的变化作出响应的话，你可以简单地 watch（监测变化） $route 对象
     // $route:function(to, from){
     //   this.list = []
-    //   this.getGoodsData();
+    //   this.getGoodsTypeData();
     // }
   },
   methods: {
-    getGoodsData(){
+    getGoodsTypeData(){
       let that = this
-      this.$apis.getGoodsList({"limit":this.pageSize,"offset":this.pageSize*this.currentPageNum},res=>{
+      this.$apis.getGoodsTypeList({"limit":this.pageSize,"offset":this.pageSize*this.currentPageNum},res=>{
         let data = res.data;
         if(data.rows.length >0){
           that.noData = false;
@@ -92,28 +84,21 @@ export default {
         }
       })
     },
-    getFilePathDomain(){
-      this.$apis.getFilePathDomain(res=>{
-        if(res.data){
-          this.filePathDomain = res.data
-        }
-      })
-    },
     loadTop() {
       // 加载更多数据
       var _this = this;
       setTimeout(function () {
-        _this.getGoodsData();
+        _this.getGoodsTypeData();
         _this.$refs.loadmore.onTopLoaded();
       }, 1000);
     },
     loadBottom() {
       // 加载更多数据
-      if(!this.allLoaded){
+     if(!this.allLoaded){
         this.currentPageNum ++;
         let _this = this;
         setTimeout(function(){
-          _this.getGoodsData();
+          _this.getGoodsTypeData();
           _this.$refs.loadmore.onBottomLoaded();
         },1000)
       }
@@ -137,6 +122,9 @@ export default {
         name:'AddGoodsDetail',
         params:item
       })
+    },
+    substrTime:function (times){
+      return times.substr(0,10)
     }
   }
 }

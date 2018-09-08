@@ -5,20 +5,20 @@
     </app-header>
     <div class="centerWrap">
       <div class="main">
-        <router-link tag="div" class="user-info" to="/index">
-          <img :src="userData.avatar" alt="">
-          <div>
-            <span class="nickname">{{userData.nickName}}</span>
-            <span class="mobile"><i class="fa fa-mobile"></i>{{userData.mobile}}</span>
+        <!-- <router-link tag="div" class="user-info" to="/index"> -->
+          <!-- <img :src="userData.avatar" alt=""> -->
+          <div class="user-info">
+            <span class="nickname">{{userData.username}}</span>
+            <!-- <span class="mobile"><i class="fa fa-mobile"></i>{{userData.mobile}}</span> -->
           </div>
-          <span class="fa fa-angle-right"></span>
-        </router-link>
+          <!-- <span class="fa fa-angle-right"></span> -->
+        <!-- </router-link> -->
         <div class="panel-wrap">
-          <ul>
+          <!-- <ul>
             <li><span><i class="fa fa-map-marker fa-fw"></i>收货地址</span></li>
             <li><span><i class="fa fa-heart fa-fw"></i></span>我的收藏</li>
             <li><span><i class="fa"></i></span></li>
-          </ul>
+          </ul> -->
           <div class="exit" @click="exitLogin">退出登录</div>
         </div>
       </div>
@@ -52,8 +52,7 @@
         this.$store.commit('updateLoginStatus', false) //更新登录状态为false
         localStorage.setItem('userInfo','');
         this.$router.push({
-          path: '/Login',
-          query:{redirect:this.$route.path}
+          path: '/login'
         })
 
       }
