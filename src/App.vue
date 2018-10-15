@@ -13,14 +13,13 @@
     name: 'App',
     data(){
       return {
-
       }
     },
     created(){
       //this.remJs();
+      
     },
     mounted(){
-
     },
     methods:{
       remJs(){
@@ -30,11 +29,10 @@
       }
     },
     computed: {
-    key() {
-        return this.$route.name !== undefined? this.$route.name +new Date(): this.$route +new Date()
+      key() {
+          return this.$route.name !== undefined? this.$route.name +new Date(): this.$route +new Date()
+      }
     }
- }
-
   }
 </script>
 

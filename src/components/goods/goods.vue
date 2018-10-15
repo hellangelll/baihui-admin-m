@@ -1,10 +1,22 @@
 <template>
   <div class="index">
-    <app-header>
+    <app-header :show-add-goods='showAddGoods'>
       <span slot="header">商品信息管理</span>
     </app-header>
     <div class="main">
-      <div class="list-wrapper">
+      <div class="list-wrapper">  
+        <el-select v-model="goodsTypeValue" style="margin-left:5px; width:2.2rem;" size='small' @change="getGoodsData(1)" placeholder="全部分类">
+          <el-option v-for="item in goodsTypeList" :key="item.id" :label="item.name" :value="item.id">
+          </el-option>
+        </el-select> <span style="font-size:0.4rem; color:#aaa;">|</span>
+        <el-select v-model="orderOptionsValue" style="margin-left:2px; width:2.2rem;" size='small' @change="getGoodsData(1)" placeholder="全部商品">
+          <el-option v-for="item in orderOptions" :key="item.value" :label="item.label" :value="item.value">
+          </el-option>
+        </el-select> <span style="font-size:0.4rem; color:#aaa;">|</span>
+        <el-select v-model="sortOptionsValue" style="margin-left:2px; width:2.3rem;" size='small' @change="getGoodsData(1)" placeholder="默认排序">
+          <el-option v-for="item in sortOptions" :key="item.value" :label="item.label" :value="item.value">
+          </el-option>
+        </el-select>
         <mt-loadmore :bottom-method="loadBottom" :bottom-all-loaded="allLoaded" @bottom-status-change="handleBottomChange" ref="loadmore" :autoFill="false">  
           <div slot="top" class="mint-loadmore-top">
             <span v-show="topStatus !== 'loading'" :class="{ 'rotate': topStatus === 'drop' }">↓</span>
@@ -19,7 +31,7 @@
             <li v-for="item in list" :key="item.id">
               <mt-cell :title="item.name+' 售价:'+item.containerPrice/100+'元'" :label="'商品ID:'+item.id+' 规格:'+item.specifications">
                 <img slot="icon" :src="filePathDomain+item.goodsImg" width="24" height="24">
-                <mt-button  @click="addGoodsDetail(item)" type="primary" size="small">添加</mt-button>
+                <!-- <mt-button  @click="addGoodsDetail(item)" type="primary" size="small">添加</mt-button> -->
                 <mt-button  @click="modifyGoodsDetail(item)" type="primary" size="small">编辑</mt-button>
               </mt-cell>
             </li>
@@ -46,35 +58,102 @@ export default {
       pageSize:10,
       pageTotal:1,
       currentPageNum:0,
-      filePathDomain:''
+      filePathDomain:'',
+      showAddGoods:true,
+      goodsTypeList:[{
+        name:'全部分类',
+        id:''
+      }],
+      orderOptions: [{
+        value: '',
+        label: '全部商品'
+      }, {
+        value: '1',
+        label: '生效商品'
+      }, {
+        value: '0',
+        label: '失效商品'
+      }, {
+        value: '3',
+        label: '库存不足'
+      }],
+      sortOptions:[{
+        label:'默认排序',
+        value:''
+      }, {
+        label:'价格降序',
+        value:'1'
+      },{
+        label:'价格升序',
+        value:'2'
+      },{
+        label:'库存降序',
+        value:'3'
+      },{
+        label:'库存升序',
+        value:'4'
+      }],
+      sortOptionslist:[{
+        sort:'',
+        order:'asc'
+      }, {
+        sort:'container_price',
+        order:'desc'
+      },{
+        sort:'container_price',
+        order:'asc'
+      },{
+        sort:'stock',
+        order:'desc'
+      },{
+        sort:'stock',
+        order:'asc'
+      }
+      ],
+      goodsTypeValue: '',
+      sortOptionsValue: '',
+      orderOptionsValue: '',
     }
   },
   filters:{
     goodsStateName:function (par){
     // console.log(par)
-    let listName = ["下单未支付","启用"]
+    let listName = ["停用","启用"]
     return '状态: '+listName[par]
     }
-},
+  },
   components:{
       'appHeader': appHeader,
       'appMenu': appMenu
   },
   mounted(){
-    this.getFilePathDomain()
-    this.getGoodsData()
+    this.getFilePathDomain(),
+    this.getGoodsTypeData(),
+    this.getGoodsData(0)
   },
   watch:{ //复用组件时，想对路由参数的变化作出响应的话，你可以简单地 watch（监测变化） $route 对象
     // $route:function(to, from){
     //   this.list = []
-    //   this.getGoodsData();
+    //   this.getGoodsData(0);
     // }
   },
   methods: {
-    getGoodsData(){
-      let that = this
-      this.$apis.getGoodsList({"limit":this.pageSize,"offset":this.pageSize*this.currentPageNum},res=>{
+    test(){
+      console.log(this.goodsTypeValue+' '+this.sortOptionsValue+' '+ this.orderOptionsValue);
+    },
+    getGoodsData(refresh){
+      let that = this;
+      let sort='',order='',categor=this.goodsTypeValue,status=this.orderOptionsValue;
+      if(this.sortOptionsValue != ''){
+        sort = this.sortOptionslist[this.sortOptionsValue].sort;
+        order = this.sortOptionslist[this.sortOptionsValue].order;
+      }
+
+      this.$apis.getGoodsList({"limit":this.pageSize,"offset":this.pageSize*this.currentPageNum,"categoryId":categor,"order":order,"sort":sort,"status":status},res=>{
         let data = res.data;
+        if(refresh){
+            that.list = [];
+          }
         if(data.rows.length >0){
           that.noData = false;
           that.list = that.list.concat(data.rows);
@@ -89,6 +168,16 @@ export default {
           that.allLoaded = true;
         }else{
           that.allLoaded = false; // 若数据已全部获取完毕
+        }
+      })
+    },
+    getGoodsTypeData(){
+      let that = this
+      this.$apis.getGoodsTypeList({"limit":1000,"offset":0},res=>{
+        let data = res.data;
+        if(data.rows.length >0){
+          that.noData = false;
+          that.goodsTypeList = that.goodsTypeList.concat(data.rows);
         }
       })
     },

@@ -4,23 +4,37 @@
     <div class="page-title">
       <slot name="header">no header</slot>
     </div>
-    <div class="right"> </div>
-    {{message}}
+    <div class="right" v-if="showAddGoods" style="width:2rem;">
+      <i class="el-icon-search" @click="gotoGoodsSearch()" style="display:inline-block;font-size:26px;"></i>&nbsp;
+      <mt-button  @click="addGoodsDetail()" size="small" style="display:inline-block;">添加</mt-button>
+    </div>&nbsp;&nbsp;
+    <!-- {{message}} -->
   </div>
 </template>
 
 <script type="text/ecmascript-6">
   export default {
     name: 'myheader',
-    props:['message'],
+    props:['message','showAddGoods'],
     data(){
       return {
-
       }
     },
     methods:{
       goBack(){
         window.history.go(-1)
+      },
+      addGoodsDetail(){
+        this.$router.push({
+          name:'AddGoodsDetail',
+          // params:item
+        })
+      },
+      gotoGoodsSearch(){
+        this.$router.push({
+          name:'GoodsSearch',
+          // params:item
+        })
       }
     }
   }

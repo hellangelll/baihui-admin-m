@@ -59,6 +59,11 @@ export default {
     let url = baseUrl + '/trade/goodsCategory/list';
     return apiAxiosFun(url,'get', params, callBack)
   },
+  getGoodsTypeOwn:function(params, callBack){
+    let url = baseUrl + '/trade/goodsCategory/own';
+    return apiAxiosFun(url,'get', params, callBack)
+  },
+  fileUploadUrl:baseUrl+"/common/sysFile/upload",
 }
 
 

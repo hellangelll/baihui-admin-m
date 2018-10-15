@@ -10,3 +10,7 @@
     transform: scale-Y(0.7);
   }
 }
+
+.mint-cell{
+  min-height: 40px !important;
+}

@@ -46,3 +46,7 @@ table {
   border-collapse: collapse;
   border-spacing: 0;
 }
+
+.mint-cell{
+  min-height: 60px !important;
+}

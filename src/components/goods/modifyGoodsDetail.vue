@@ -4,13 +4,21 @@
     <div class="main">
       <el-form ref="form" :model="form" label-width="120px">
         <el-form-item label="商品编号">
-          <el-input v-model="form.id"></el-input>
+          <el-input v-model="form.id" :disabled="true"></el-input>
         </el-form-item>
         <el-form-item label="商品名称">
           <el-input v-model="form.name"></el-input>
         </el-form-item>
         <el-form-item label="商品类别">
-          <el-input v-model="form.categoryId"></el-input>
+          <!-- <el-input v-model="form.categoryId"></el-input> -->
+        <el-select v-model="form.categoryId" filterable placeholder="请选择">
+          <el-option
+            v-for="item in categoryOptions"
+            :key="item.id"
+            :label="item.name"
+            :value="item.id">
+          </el-option>
+        </el-select>
         </el-form-item>
         <el-form-item label="整装售价(元)">
           <el-input v-model="form.containerPrice"></el-input>
@@ -18,7 +26,7 @@
         <el-form-item label="显示图片">
           <el-upload
             class="upload-demo"
-            action="https://test.bhsht.com/common/sysFile/upload"
+            :action="this.$apis.fileUploadUrl"
             :multiple = false
             :on-preview="handlePreview"
             :on-remove="handleRemove"
@@ -46,7 +54,18 @@
           <el-input v-model="form.specifications"></el-input>
         </el-form-item>
         <el-form-item label="商品状态">
-          <el-input v-model="form.status"></el-input>
+          <!-- <el-input v-model="goodsStateName"></el-input> -->
+          <el-select v-model="form.status">
+            <el-option
+              v-for="item in goodsStautsList"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="库存">
+           <el-input-number v-model="form.stock" :disabled="stockStatus" :min="0" :max="100000" label="库存数"></el-input-number>
         </el-form-item>
         <el-form-item label="标签">
           <el-input v-model="form.label"></el-input>
@@ -70,6 +89,7 @@
 </template>
 
 <script type="text/ecmascript-6">
+  import {baseUrl} from '@/api/index'
   import appHeader from '@/components/public/header/header'
   export default {
     name: "detail",
@@ -77,33 +97,78 @@
       return {
         form:{
         },
-        fileList:[]
+        fileList:[],
+        categoryOptions:[],
+        filePathDomain:'',
+        goodsStautsList:[{value:0,label:"停用"},{value:1,label:"启用"}],
+        originalStock:0,
+        stockStatus:false
       }
     },
     components:{
       'appHeader': appHeader
     },
     mounted(){
-      this.getDetailData();
+      this.getGoodsTypeOwn();
+      this.getFilePathDomain(this.getDetailData);
     },
     watch:{ //复用组件时，想对路由参数的变化作出响应的话，你可以简单地 watch（监测变化） $route 对象
-      $route:function(to, from){
-        this.getDetailData();
-      }
+      // $route:function(to, from){
+      //   this.getDetailData();
+      // }
     },
+    // computed:{
+    //   goodsStateName:{
+    //     get:function(){
+    //       let listName = [{value:0,label:"停用"},{value:1,label:"启用"}]
+    //       return listName[this.form.status]
+    //     },
+    //     set:function(value){
+          
+    //     }
+    //   }
+    // },
     methods:{
+      getFilePathDomain(callback){
+        this.$apis.getFilePathDomain(res=>{
+          if(res.data){
+            this.filePathDomain = res.data
+            callback();
+          }
+        })
+      },
+      getGoodsTypeOwn(){
+        let that = this
+        this.$apis.getGoodsTypeOwn({},res=>{
+          let data = JSON.parse(res.data.data);
+          if(data.length >0){
+            that.categoryOptions = data
+          }
+        })
+      },
       getDetailData(){
         this.form = this.$route.params;
+        if(this.form.stock<0){
+          this.form.stock = 0;
+        }
+        this.originalStock = this.form.stock;
+        this.stockStatus = !this.form.status; //如果商品状态是失效,则不能修改库存
         this.form.containerPrice = this.form.containerPrice/100;
         this.form.bulkPrice = this.form.bulkPrice/100;
-        this.form.var01 = this.form.var01/100;        
+        this.form.var01 = this.form.var01/100;     
+        this.fileList = [{name:"",url:this.filePathDomain+this.form.goodsImg}];   
       },
       saveGoodsDetail(){
         let redirect = this.$route.query.redirect || '/goods';
         delete this.form.updateTime
         delete this.form.createTime
+        this.form.containerPrice = this.form.containerPrice*100;
+        this.form.bulkPrice = this.form.bulkPrice*100;
+        this.form.var01 = this.form.var01*100;
+        this.form.stock = this.form.stock-this.originalStock;
+
         if(this.fileList.length){
-          this.form.goodsImg = this.fileList[0].url
+          this.form.goodsImg = this.fileList[0].url.replace(this.filePathDomain,'');
         }
         this.$apis.saveGoodsInfo(this.form,res=>{
           let data = res.data;
@@ -127,11 +192,11 @@
         let data = rep;
           if(data.code == 0){
             swal({
-              title:'修改成功!',
+              title:'上传成功!',
               type:'success',
               confirmButtonText:'确定'
             });
-            this.fileList = [{name:"",url:data.fileName}]        
+            this.fileList = [{name:"",url:this.filePathDomain+data.fileName}]        
           }
       },
       handleError(err){

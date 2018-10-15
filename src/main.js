@@ -5,6 +5,8 @@ import App from './App'
 import Router from './router'
 import Vuex from 'vuex'
 import Store from './store'
+import global_ from './components/tool/global.js'
+
 
 //引入Axios插件
 import Axios from 'axios'
@@ -21,11 +23,16 @@ import 'mint-ui/lib/style.css'
 //引入图片预览插件
 import VuePicturePreview from 'vue-picture-preview'
 
+//微信登录插件
+import wechatAuth from './api/wechatAuth'
+import vuePicturePreview from 'vue-picture-preview';
 
+Vue.use(wechatAuth,{appid:'wx16f8d77e7418393f'})
 
 //将Axios注册到Vue的全局
 Vue.prototype.Axios = Axios
 Vue.prototype.$apis = Apis
+Vue.prototype.GLOBAL = global_
 
 Vue.use(Vuex)
 Vue.use(VuePicturePreview)
@@ -67,22 +74,27 @@ new Vue({
     this.$router.beforeEach((to, from, next) => {
       //设置延时器让created先执行在进行路由跳转
       setTimeout((res) => {
-      // 判断该路由是否需要登录权限
-        if (to.meta.requiredAuth) { 
-        // 通过vuex state获取当前的状态是否存在
-          if (localStorage.getItem("userInfo")) { 
-            next();
-          } else {
-            next({
-              path: '/login',
-              query: {
-                redirect: to.fullPath
-              } // 将跳转的路由path作为参数，登录成功后跳转到该路由
-            })
-          }
-        } else {
-          next();
-        }
+        wechatAuth.redirect_uri = window.location.host
+        // store.dispatch('setLoginStatus', 1)
+        window.location.href = wechatAuth.authUrl
+
+
+        // // 判断该路由是否需要登录权限
+        // if (to.meta.requiredAuth) { 
+        // // 通过vuex state获取当前的状态是否存在
+        //   if (localStorage.getItem("userInfo")) { 
+        //     next();
+        //   } else {
+        //     // next({
+        //     //   path: '/login',
+        //     //   query: {
+        //     //     redirect: to.fullPath
+        //     //   } // 将跳转的路由path作为参数，登录成功后跳转到该路由
+        //     // })
+        //   }
+        // } else {
+        //   next();
+        // }
       }, 100);
     })
   }

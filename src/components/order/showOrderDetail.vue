@@ -8,10 +8,11 @@
         <mt-cell title="订单状态">{{item.status | orderStateName}}</mt-cell>
         <mt-cell title="下单时间">{{item.createTime}}</mt-cell>
         <mt-cell title="收货人信息">{{customerAddressDO.linkMan+' '+customerAddressDO.linkPhone}}</mt-cell>
-        <mt-cell title="订货单详情" v-for="its in orderDetailResults" :key="its.name">{{its.name+"X"+its.num}}</mt-cell>
+        <mt-cell title="收货地址">{{customerAddressDO.address}}</mt-cell>
+        <mt-cell title="订货单详情" v-for="its in orderDetailResults" :key="its.name">{{its.name+"("+its.specifications+")X"+its.num}}</mt-cell>
         <mt-cell title="客户留言">{{item.remark||'暂无'}}</mt-cell>
     </div>
-    <mt-button v-if="item.status==1||item.status==2" type="primary" @click="modifyOrderStatus(item)">修改订单状态为-{{item.status+1|orderStateName}}</mt-button>
+    <mt-button v-if="item.status==0||item.status==1||item.status==2" type="primary" @click="modifyOrderStatus(item)">修改订单状态为-{{item.status+1|orderStateName}}</mt-button>
   </div>
 </template>
 
@@ -48,7 +49,7 @@
     },
     watch:{ //复用组件时，想对路由参数的变化作出响应的话，你可以简单地 watch（监测变化） $route 对象
       $route:function(to, from){
-        console.log(to)
+        // console.log(to)
         if(to.path=='/showOrderDetail'){
           this.getDetailData();
         }
@@ -63,7 +64,9 @@
       modifyOrderStatus(){
         let redirect = this.$route.query.redirect || '/order';
         var status = this.item.status
-        if(status == 1){
+        if(status == 0){
+          status = 1
+        }else if(status == 1){
           status = 2
         }else if(status == 2){
           status = 3
@@ -101,6 +104,8 @@
       font-size: .28rem;
       line-height:.32rem;
       color:#666;
+      height: 100%;
+      overflow: auto;
       h1.bookName{
         width:100%;
         height:.8rem;

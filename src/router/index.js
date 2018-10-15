@@ -16,6 +16,7 @@ import Order from '@/components/order/order'
 import ShowOrderDetail from '@/components/order/showOrderDetail'
 import Goods from '@/components/goods/goods'
 import GoodsType from '@/components/goodsType/goodsType'
+import GoodsSearch from '@/components/search/goodsSearch'
 import ModifyGoodsDetail from '@/components/goods/modifyGoodsDetail'
 import AddGoodsDetail from '@/components/goods/addGoodsDetail'
 import Customer from '@/components/customer/customer'
@@ -38,7 +39,6 @@ const myRouter = new Router({
     {
       path: '/business',
       name: 'Business',
-      alias: '/',
       meta:{requiredAuth:true},
       component: Business
     },
@@ -91,6 +91,12 @@ const myRouter = new Router({
       component: AddGoodsDetail
     },
     {
+      path: '/goodsSearch',
+      name: 'GoodsSearch',
+      meta:{requiredAuth:true},
+      component: GoodsSearch
+    },
+    {
       path: '/customer',
       name: 'Customer',
       meta:{requiredAuth:true},
@@ -134,6 +140,7 @@ const myRouter = new Router({
     {
       path: '/login',
       name: 'Login',
+      alias: '/',
       component: Login
     },
     {

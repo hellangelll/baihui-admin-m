@@ -69,6 +69,8 @@
       font-size: .28rem;
       line-height:.32rem;
       color:#666;
+      height: 100%;
+      overflow: auto;
       h1.bookName{
         width:100%;
         height:.8rem;

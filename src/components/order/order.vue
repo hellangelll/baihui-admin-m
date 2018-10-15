@@ -5,6 +5,14 @@
     </app-header>
     <div class="main">
       <div class="list-wrapper">
+        <el-select v-model="orderStateValue" style="margin-left:5px; width:3.5rem;" size='small' @change="getOrderData(1)" placeholder="全部订单">
+          <el-option v-for="item in orderStateList" :key="item.value" :label="item.label" :value="item.value">
+          </el-option>
+        </el-select> <span style="font-size:0.4rem; color:#aaa;">|</span>
+        <el-select v-model="sortOptionsValue" style="margin-left:2px; width:3.5rem;" size='small' @change="getOrderData(1)" placeholder="默认排序">
+          <el-option v-for="item in sortOptions" :key="item.value" :label="item.label" :value="item.value">
+          </el-option>
+        </el-select>
         <mt-loadmore :bottom-method="loadBottom" :bottom-all-loaded="allLoaded" @bottom-status-change="handleBottomChange" ref="loadmore" :autoFill="false">
           <div slot="top" class="mint-loadmore-top">
             <span v-show="topStatus !== 'loading'" :class="{ 'rotate': topStatus === 'drop' }">↓</span>
@@ -17,8 +25,9 @@
           <ul>
             <span v-if="noData">没有数据</span>
             <li v-for="item in list" :key=item.id>
-              <mt-cell :title="'订单金额:'+item.totalmoney/100" :label="'订单号:'+item.id" is-link>
+              <mt-cell :title="'买家:'+item.customerAddressDO.linkMan+' '+item.totalmoney/100+'元'" :label="item.createTime" is-link>
                 <mt-button  @click="showOrderDetail(item)" type="primary" size="small">{{item.status | orderStateName}}</mt-button>
+                <!-- <mt-button  @click="showOrderDetail(item)" type="primary" size="small">{{item.customerAddressDO.address}}</mt-button> -->
               </mt-cell>
             </li>
           </ul>
@@ -43,7 +52,58 @@ export default {
       scrollMode:"auto", //移动端弹性滚动效果，touch为弹性滚动，auto是非弹性滚动
       pageSize:10,
       pageTotal:1,
-      currentPageNum:0
+      currentPageNum:0,
+      orderStateList:[{
+        value: '',
+        label: '全部订单'
+      }, {
+        value: '0',
+        label: '下单未支付'
+      }, {
+        value: '1',
+        label: '等待派送'
+      }, {
+        value: '2',
+        label: '派送中'
+      }, {
+        value: '3',
+        label: '已收货'
+      }],
+      orderStateValue:'',
+      sortOptions:[{
+        label:'默认排序',
+        value:''
+      }, {
+        label:'金额降序',
+        value:'1'
+      },{
+        label:'金额升序',
+        value:'2'
+      },{
+        label:'时间降序',
+        value:'3'
+      },{
+        label:'时间升序',
+        value:'4'
+      }],
+      sortOptionslist:[{
+        sort:'',
+        order:'asc'
+      }, {
+        sort:'totalmoney',
+        order:'desc'
+      },{
+        sort:'totalmoney',
+        order:'asc'
+      },{
+        sort:'create_time',
+        order:'desc'
+      },{
+        sort:'create_time',
+        order:'asc'
+      }
+      ],
+      sortOptionsValue:''
     }
   },
   filters:{
@@ -58,18 +118,28 @@ export default {
       'appMenu': appMenu
   },
   mounted(){
-      this.getOrderData();
+      this.getOrderData(0);
   },
   watch:{ //复用组件时，想对路由参数的变化作出响应的话，你可以简单地 watch（监测变化） $route 对象
     // $route:function(to, from){
     //   this.list = []
-    //   this.getOrderData();
+    //   this.getOrderData(0);
     // }
   },
   methods: {
-    getOrderData(){
-      this.$apis.getOrderList({"limit":this.pageSize,"offset":this.pageSize*this.currentPageNum},res=>{
+    getOrderData(refresh){
+      let that = this;
+      let sort='',order='',status=this.orderStateValue;
+      if(this.sortOptionsValue != ''){
+        sort = this.sortOptionslist[this.sortOptionsValue].sort;
+        order = this.sortOptionslist[this.sortOptionsValue].order;
+      }
+
+      this.$apis.getOrderList({"limit":this.pageSize,"offset":this.pageSize*this.currentPageNum,"order":order,"sort":sort,"status":status},res=>{
         let data = res.data;
+        if(refresh){
+          that.list = [];
+        }
         if(data.rows.length >0){
           this.noData = false;
           this.list = this.list.concat(data.rows);
