@@ -74,27 +74,27 @@ new Vue({
     this.$router.beforeEach((to, from, next) => {
       //设置延时器让created先执行在进行路由跳转
       setTimeout((res) => {
-        wechatAuth.redirect_uri = window.location.host
-        // store.dispatch('setLoginStatus', 1)
-        window.location.href = wechatAuth.authUrl
+        // wechatAuth.redirect_uri = window.location.host
+        // // store.dispatch('setLoginStatus', 1)
+        // window.location.href = wechatAuth.authUrl
 
 
-        // // 判断该路由是否需要登录权限
-        // if (to.meta.requiredAuth) { 
-        // // 通过vuex state获取当前的状态是否存在
-        //   if (localStorage.getItem("userInfo")) { 
-        //     next();
-        //   } else {
-        //     // next({
-        //     //   path: '/login',
-        //     //   query: {
-        //     //     redirect: to.fullPath
-        //     //   } // 将跳转的路由path作为参数，登录成功后跳转到该路由
-        //     // })
-        //   }
-        // } else {
-        //   next();
-        // }
+        // 判断该路由是否需要登录权限
+        if (to.meta.requiredAuth) { 
+        // 通过vuex state获取当前的状态是否存在
+          if (localStorage.getItem("userInfo")) { 
+            next();
+          } else {
+            // next({
+            //   path: '/login',
+            //   query: {
+            //     redirect: to.fullPath
+            //   } // 将跳转的路由path作为参数，登录成功后跳转到该路由
+            // })
+          }
+        } else {
+          next();
+        }
       }, 100);
     })
   }

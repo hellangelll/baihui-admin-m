@@ -74,7 +74,7 @@ export default {
         value: '0',
         label: '失效商品'
       }, {
-        value: '3',
+        value: '5',
         label: '库存不足'
       }],
       sortOptions:[{
@@ -138,18 +138,19 @@ export default {
     // }
   },
   methods: {
-    test(){
-      console.log(this.goodsTypeValue+' '+this.sortOptionsValue+' '+ this.orderOptionsValue);
-    },
     getGoodsData(refresh){
       let that = this;
-      let sort='',order='',categor=this.goodsTypeValue,status=this.orderOptionsValue;
+      let sort='',order='',categor=this.goodsTypeValue,status=this.orderOptionsValue,warning='';
+      if( status != 0 && status != 1 && status != '' ){
+        warning = status;
+        status = '';
+      }
       if(this.sortOptionsValue != ''){
         sort = this.sortOptionslist[this.sortOptionsValue].sort;
         order = this.sortOptionslist[this.sortOptionsValue].order;
       }
 
-      this.$apis.getGoodsList({"limit":this.pageSize,"offset":this.pageSize*this.currentPageNum,"categoryId":categor,"order":order,"sort":sort,"status":status},res=>{
+      this.$apis.getGoodsList({"limit":this.pageSize,"offset":this.pageSize*this.currentPageNum,"categoryId":categor,"order":order,"sort":sort,"status":status,"warning":warning},res=>{
         let data = res.data;
         if(refresh){
             that.list = [];
