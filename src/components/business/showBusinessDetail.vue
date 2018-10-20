@@ -8,6 +8,7 @@
         <mt-cell title="联系人姓名">{{item.contactPeopleName | defultValue}}</mt-cell>
         <mt-cell title="联系人电话">{{item.contactPeoplePhone | defultValue}}</mt-cell>
         <mt-cell title="商家地址">{{item.businessAddress | defultValue}}</mt-cell>
+        <mt-cell title="审核状态">{{item.status | statusValue}}</mt-cell>
         <mt-cell title="备注">{{item.businessMemo | defultValue}}</mt-cell>
         <mt-cell title="创建时间">{{item.createTime | defultValue}}</mt-cell>
         <mt-cell title="更新时间">{{item.updateTime | defultValue}}</mt-cell>        
@@ -32,6 +33,10 @@
       defultValue:function (par){
         // console.log(par)
         return par || '暂无数据'
+      },
+      statusValue:function (code){
+        let statusCode=['待审核','审核通过','审核不通过']
+        return statusCode[code]
       }
     },
     mounted(){
@@ -48,9 +53,9 @@
       },
       modifyBusinessDetail(item){
         this.$router.push({
-        name:'ModifyBusinessDetail',
-        params:item
-      })
+          name:'ModifyBusinessDetail',
+          params:item
+        })
       }
     }
   }

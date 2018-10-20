@@ -18,6 +18,26 @@
         <el-form-item label="商家地址">
           <el-input v-model="form.businessAddress"></el-input>
         </el-form-item>
+        <el-form-item v-if="oldStatus==0" label="审核状态">
+          <el-select v-model="form.status" filterable placeholder="请选择">
+            <el-option
+              v-for="item in statusCode"
+              :key="item.id"
+              :label="item.name"
+              :value="item.id">
+            </el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="商家所属类目">
+          <el-select v-model="form.categoryId" filterable placeholder="请选择">
+            <el-option
+              v-for="item in goodsTypeList"
+              :key="item.id"
+              :label="item.name"
+              :value="item.id">
+            </el-option>
+          </el-select>
+        </el-form-item>
         <el-form-item label="备注">
           <el-input v-model="form.businessMemo"></el-input>
         </el-form-item>
@@ -41,15 +61,32 @@
           contactPeopleName:'',
           contactPeoplePhone:'',
           createTime:'',
+          status:'',
           id:'',
-          updateTime:''
-        }
+          updateTime:'',
+          categoryId:''
+        },
+        oldStatus:0,
+        goodsTypeList:[],
+        statusCode:[
+          {
+            id:0,
+            name:'待审核'
+          },{
+            id:1,
+            name:'审核通过'
+          },{
+            id:2,
+            name:'审核不通过'
+          }
+        ]
       }
     },
     components:{
       'appHeader': appHeader
     },
     mounted(){
+      this.getGoodsTypeList();
       this.getDetailData();
     },
     watch:{ //复用组件时，想对路由参数的变化作出响应的话，你可以简单地 watch（监测变化） $route 对象
@@ -59,10 +96,15 @@
     },
     methods:{
       getDetailData(){
-        this.form = this.$route.params
+        this.oldStatus = this.$route.params.status;
+        this.form = this.$route.params;
       },
       saveBusinessDetail(){
         let redirect = this.$route.query.redirect || '/business';
+        if(this.form.categoryId == null && this.oldStatus == 0){
+          alert('服务商所属菜单不能为空!');
+          return false;
+        }
         // console.log(this.form)
         this.$apis.saveBusinessInfo(this.form,res=>{
           let data = res.data;
@@ -74,9 +116,24 @@
               confirmButtonText:'确定'
             });
             this.$router.push({path:redirect});          
+          }else{
+            swal({
+              title:data.msg,
+              type:'faile',
+              confirmButtonText:'确定'
+            });
           }
         })
-      }
+      },
+      getGoodsTypeList(){
+        let that = this
+        this.$apis.getGoodsTypeList({"limit":1000,"offset":0,"pid":0},res=>{
+          let data = res.data;
+          if(data.rows.length >0){
+            that.goodsTypeList = data.rows;
+          }
+        })
+      },
     }
   }
 </script>

@@ -17,7 +17,7 @@
           <ul>
             <span v-if="noData">没有数据</span>
             <li v-for="item in list" :key=item.id>
-              <mt-cell :title="item.id+':'+item.businessName" :label="item.businessMemo" is-link>
+              <mt-cell :title="item.id+':'+item.businessName+' '+item.contactPeopleName" :label="item.businessMemo" is-link>
                 <mt-button  @click="showBusinessDetail(item)" type="primary" size="small">查看详情</mt-button>
               </mt-cell>
             </li>
