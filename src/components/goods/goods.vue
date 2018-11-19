@@ -7,10 +7,12 @@
       <div class="list-wrapper">  
         <el-select v-model="goodsTypeValue" style="margin-left:5px; width:2.2rem;" size='small' @change="getGoodsData(1)" placeholder="全部分类">
           <el-option v-for="item in goodsTypeList" :key="item.id" :label="item.name" :value="item.id">
+            
           </el-option>
         </el-select> <span style="font-size:0.4rem; color:#aaa;">|</span>
         <el-select v-model="orderOptionsValue" style="margin-left:2px; width:2.2rem;" size='small' @change="getGoodsData(1)" placeholder="全部商品">
           <el-option v-for="item in orderOptions" :key="item.value" :label="item.label" :value="item.value">
+            <span style="float: left">{{ item.label+' ('+item.num+')' }}</span>
           </el-option>
         </el-select> <span style="font-size:0.4rem; color:#aaa;">|</span>
         <el-select v-model="sortOptionsValue" style="margin-left:2px; width:2.3rem;" size='small' @change="getGoodsData(1)" placeholder="默认排序">
@@ -66,16 +68,20 @@ export default {
       }],
       orderOptions: [{
         value: '',
-        label: '全部商品'
+        label: '全部商品',
+        num: '535'
       }, {
         value: '1',
-        label: '生效商品'
+        label: '生效商品',
+        num: '135'
       }, {
         value: '0',
-        label: '失效商品'
+        label: '失效商品',
+        num: '325'
       }, {
         value: '5',
-        label: '库存不足'
+        label: '库存不足',
+        num: '315'
       }],
       sortOptions:[{
         label:'默认排序',

@@ -4,15 +4,18 @@
       <span slot="header">订单信息管理</span>
     </app-header>
     <div class="main">
-      <div class="list-wrapper">
-        <el-select v-model="orderStateValue" style="margin-left:5px; width:3.5rem;" size='small' @change="getOrderData(1)" placeholder="全部订单">
-          <el-option v-for="item in orderStateList" :key="item.value" :label="item.label" :value="item.value">
-          </el-option>
-        </el-select> <span style="font-size:0.4rem; color:#aaa;">|</span>
+      <div class="list-wrapper">        
         <el-select v-model="sortOptionsValue" style="margin-left:2px; width:3.5rem;" size='small' @change="getOrderData(1)" placeholder="默认排序">
           <el-option v-for="item in sortOptions" :key="item.value" :label="item.label" :value="item.value">
           </el-option>
         </el-select>
+        <div style="padding:10px 2px 0 2px;">
+          <el-button size="small" @click="changeOrderStae('')">全部的订单 <el-badge class="item" /></el-button>
+          <el-button size="small" @click="changeOrderStae('0')">下单未支付 <el-badge class="item" :is-dot="false" /></el-button>
+          <el-button size="small" @click="changeOrderStae('1')">等待派送中 <el-badge class="mark" :is-dot="false" /></el-button>
+          <el-button size="small" @click="changeOrderStae('2')">订单派送中 <el-badge class="mark" /></el-button>
+          <el-button size="small" @click="changeOrderStae('3')">已确认收货 <el-badge class="mark"  /></el-button>
+        </div>
         <mt-loadmore :bottom-method="loadBottom" :bottom-all-loaded="allLoaded" @bottom-status-change="handleBottomChange" ref="loadmore" :autoFill="false">
           <div slot="top" class="mint-loadmore-top">
             <span v-show="topStatus !== 'loading'" :class="{ 'rotate': topStatus === 'drop' }">↓</span>
@@ -25,9 +28,9 @@
           <ul>
             <span v-if="noData">没有数据</span>
             <li v-for="item in list" :key=item.id>
-              <mt-cell :title="'买家:'+item.customerAddressDO.linkMan+' '+item.totalmoney/100+'元'" :label="item.createTime" is-link>
-                <mt-button  @click="showOrderDetail(item)" type="primary" size="small">{{item.status | orderStateName}}</mt-button>
-                <!-- <mt-button  @click="showOrderDetail(item)" type="primary" size="small">{{item.customerAddressDO.address}}</mt-button> -->
+              <mt-cell :title="item.customerAddressDO.linkMan" :label="'下单时间:'+item.createTime" is-link>
+                ￥{{item.totalmoney/100}}元&nbsp;
+                <mt-button plain @click="showOrderDetail(item)" type="primary" size="small">{{item.status | orderStateName}}</mt-button>
               </mt-cell>
             </li>
           </ul>
@@ -53,22 +56,6 @@ export default {
       pageSize:10,
       pageTotal:1,
       currentPageNum:0,
-      orderStateList:[{
-        value: '',
-        label: '全部订单'
-      }, {
-        value: '0',
-        label: '下单未支付'
-      }, {
-        value: '1',
-        label: '等待派送'
-      }, {
-        value: '2',
-        label: '派送中'
-      }, {
-        value: '3',
-        label: '已收货'
-      }],
       orderStateValue:'',
       sortOptions:[{
         label:'默认排序',
@@ -127,6 +114,10 @@ export default {
     // }
   },
   methods: {
+    changeOrderStae(val){
+      this.orderStateValue = val;
+      this.getOrderData(1);
+    },
     getOrderData(refresh){
       let that = this;
       let sort='',order='',status=this.orderStateValue;
@@ -193,8 +184,33 @@ export default {
   }
 }
 </script>
+<style lang='less'>
+.mint-cell-value.is-link {
+  font-size: 12px !important;
+}
+.mint-cell-text {
+  font-weight: 700 !important;
+  font-size: 14px !important;
+}
+.mint-button--small {
+  font-size: 12px !important;
+  height: 26px !important;
+  padding: 0 4px !important;
+}
+
+
+</style>
 
 <style lang='less' scoped>
+.mint-button{
+  border-radius: 14px !important;
+}
+.el-button{
+  border-radius: 10px;
+  line-height: 10px;
+  background-color: #EFF0F2;
+  margin: 2px;
+}
 .line{
   text-align: center;
 }

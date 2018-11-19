@@ -34,14 +34,17 @@ Axios.interceptors.request.use(function (config) {
 Axios.interceptors.response.use(function (response) {
   Indicator.close();
   // 对响应数据做点什么
-  if( response.data.code){
+  if( response.data.code != 0){
     if(response.data.code == 403){
       Store.commit('updateLoginStatus', false)
       localStorage.setItem('userInfo','');
       Router.push({
         name:'Login'
       })
+    }else{
+      return response;
     }
+
   }else{
     return response;
   }

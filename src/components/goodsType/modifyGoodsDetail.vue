@@ -12,7 +12,7 @@
         <el-form-item label="商品类别">
           <el-input v-model="form.categoryId"></el-input>
         </el-form-item>
-        <el-form-item label="整装售价(元)">
+        <el-form-item label="现价(元)">
           <el-input v-model="form.containerPrice"></el-input>
         </el-form-item>
         <el-form-item label="显示图片">
@@ -30,7 +30,7 @@
             <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
           </el-upload>
         </el-form-item>
-        <el-form-item label="散装价格(元)">
+        <el-form-item label="原价(元)">
           <el-input v-model="form.bulkPrice"></el-input>
         </el-form-item>
         <el-form-item label="散装起批数量">

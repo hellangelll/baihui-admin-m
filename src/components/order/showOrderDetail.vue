@@ -1,15 +1,24 @@
 <template>
   <div class="detail">
-    <app-header><p slot="header">订单信息详情</p></app-header>
+    <app-header><p slot="header">订单信息管理</p></app-header>
+    <div class="d-title">{{item.status | orderStateName}}</div>
+    <div class="d-detail">订货单详情</div>
     <div class="main">
+        <div class="d-order-list" v-for="ite in item.orderDetailResults" :key=ite.id>
+          <mt-cell :title="ite.name+'('+ite.specifications+') x'+ite.num">
+            <img slot="icon" :src="ite.goodsImg" width="40" height="40">
+          </mt-cell>
+        </div>
         <mt-cell title="订单编号">{{item.id}}</mt-cell>
-        <mt-cell title="订货总金额(元)">{{item.totalmoney/100}}</mt-cell>
-        <mt-cell title="支付状态">{{item.isPaid | payStateName}}</mt-cell>
-        <mt-cell title="订单状态">{{item.status | orderStateName}}</mt-cell>
         <mt-cell title="下单时间">{{item.createTime}}</mt-cell>
+        <mt-cell title="支付状态">{{item.isPaid | payStateName}}</mt-cell>
+        <div class="d-pay">总金额:<span class="d-price">￥{{item.totalmoney/100}}</span></div>
+        <!-- <mt-cell title="订货总金额(元)">{{item.totalmoney/100}}</mt-cell> -->
+        <!-- <mt-cell title="订单状态">{{item.status | orderStateName}}</mt-cell> -->
+        <div class="d-send">配送信息</div>
         <mt-cell title="收货人信息">{{customerAddressDO.linkMan+' '+customerAddressDO.linkPhone}}</mt-cell>
         <mt-cell title="收货地址">{{customerAddressDO.address}}</mt-cell>
-        <mt-cell title="订货单详情" v-for="its in orderDetailResults" :key="its.name">{{its.name+"("+its.specifications+")X"+its.num}}</mt-cell>
+        <!-- <mt-cell title="订货单详情" v-for="its in orderDetailResults" :key="its.name">{{its.name+"("+its.specifications+")X"+its.num}}</mt-cell> -->
         <mt-cell title="客户留言">{{item.remark||'暂无'}}</mt-cell>
     </div>
     <mt-button v-if="item.status==0||item.status==1||item.status==2" type="primary" @click="modifyOrderStatus(item)">修改订单状态为-{{item.status+1|orderStateName}}</mt-button>
@@ -90,8 +99,68 @@
     }
   }
 </script>
+<style lang="less">
+  .d-order-list .mint-cell .mint-cell-wrapper{
+    background-size: 120% 0px !important;
+  }
+  .d-order-list .mint-cell{
+    min-height: 50px !important;
+  }
+  .mint-cell-text{
+    font-weight: 500 !important;
+  }
+</style>
 
 <style lang="less" scoped>
+  .d-pay{
+    text-align:right;
+    width: 100%;
+    height: 40px;
+    line-height: 40px;
+    font-size: 14px;
+  }
+  .d-pay .d-price{
+    font-size: 28px;
+    color: red;
+  }
+  .d-title{
+    width: 100%;
+    height: 30px;
+    background-color: rgb(235, 235, 235);
+    line-height: 30px;
+    padding: 15px;
+    font-size: 16px;
+    font-weight: 600;
+  }
+  .d-detail{
+    width:100%;
+    height: 20px;
+    line-height: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 10px 15px;
+    border-style: solid;
+    border-bottom-width: 1px;
+    border-bottom-color: #ccc;
+  }
+  .d-send{
+    width:100%;
+    height: 20px;
+    line-height: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 10px 15px;
+    border-style: solid;
+    border-top-width: 10px;
+    border-top-color: #ebebeb;
+    margin-left:-10px;
+  }
+  .d-order-list{
+    width:100%;
+  }
+  .mint-button{
+    border-radius:4px !important;
+  }
   .detail{
     display: flex;
     flex-flow: column nowrap;

@@ -42,21 +42,24 @@
 
         let name = this.userName;
         let pwd = this.userPwd;
-        let redirect = this.$route.query.redirect || '/business';
+        let redirect = this.$route.query.redirect || '/order';
+        let that = this;
 
         this.$apis.login({"username":name,"password":pwd}, res => {
           let data = res.data;
-          this.userData = data;
+          that.userData = data;
           if(res.status == 200){
-            if( this.userData.code == 0){;
+            if( that.userData.code == 0){;
               localStorage.setItem('userInfo', JSON.stringify({"username":name}));
-              this.$store.commit('updateLoginStatus', true); //更新登录状态为true
-              this.$store.commit('updateUserInfo', this.userData);
+              that.$store.commit('updateLoginStatus', true); //更新登录状态为true
+              that.$store.commit('updateUserInfo', that.userData);
 
-              this.$router.push({path:redirect});
+              that.$router.push({path:redirect});
             }else{
-              this.loginErr(data);
+              that.loginErr(data);
             }
+          }else{
+            alert(res.msg);
           }
         })
       },

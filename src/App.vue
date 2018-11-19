@@ -57,4 +57,21 @@
     height:100%;
     background: #FFF;
   }
+
+  .el-input__inner{
+    height: 35px;
+  }
+
+  .el-form-item {
+   margin-bottom: 10px;
+  }
+
+  .index .main .list-wrapper ul li{
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    box-shadow: none !important;
+  }
+   .index,.index .main .list-wrapper{
+    background-color: #fff !important;
+  }
 </style>

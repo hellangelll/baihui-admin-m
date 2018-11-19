@@ -78,7 +78,6 @@ new Vue({
         // // store.dispatch('setLoginStatus', 1)
         // window.location.href = wechatAuth.authUrl
 
-
         // 判断该路由是否需要登录权限
         if (to.meta.requiredAuth) { 
         // 通过vuex state获取当前的状态是否存在
